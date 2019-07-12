@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace用来找唯一的Mapper文件 一般是mapper的全路径名+xxxMapper -->
+<mapper namespace="org.wzb.student.mapper.TeacherMapper">
+
+	<!-- 查询所有老师 -->
+ 	<select id="queryAll"  resultMap="teacherMap">
+ 		select u.id,u.name,u.pwd,u.teanum,u.imgUrl,d.id did,u.sex,d.course_name dname 
+ 		from t_teacher u,t_course d where u.courseid=d.id
+ 	</select>
+ 	
+ 	 <!-- 查询一个老师 -->
+ 	<select id="queryOne"  resultMap="teacherMap" parameterType="Teacher">
+ 		select u.id,u.name,u.pwd,u.teanum,u.imgUrl,u.sex,d.id did,d.course_name dname 
+ 		from t_teacher u,t_course d where u.courseid=d.id and u.id=#{id}
+ 	</select>
+ 	
+ 	<resultMap type="Teacher" id="teacherMap">
+ 		<id column="id" property="id"/>
+ 		<result column="name" property="name"/>
+ 		<result column="pwd" property="pwd"/>
+ 		<result column="teanum" property="teanum"/>
+ 		<result column="imgUrl" property="imgUrl"/>
+ 		<result column="sex" property="sex"/>
+ 		<association property="course" javaType="Course">
+ 			<id column="did" property="id"/>
+ 			<id column="dname" property="course_name" />
+ 		</association>
+ 	</resultMap>
+ 	
+ 	<!-- 删除方法 -->
+ 	<delete id="delete" parameterType="Teacher">
+ 		delete from t_teacher where id=#{id}
+ 	</delete>
+ 	
+ 	<!-- 保存方法 -->
+ 	<insert id="save" parameterType="Teacher" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+ 		insert into t_teacher(name,pwd,teanum,imgUrl,courseid,sex) values(#{name},#{pwd},#{teanum},
+ 		#{imgUrl},#{course.id},#{sex});
+ 	</insert>
+ 	
+ 	<!-- 更新方法 -->
+ 	<update id="update" parameterType="Teacher">
+ 		update t_teacher set name=#{name},pwd=#{pwd},teanum=#{teanum},imgUrl=#{imgUrl},
+ 		courseid=#{course.id},sex=#{sex} where id=#{id}
+ 	</update>
+ 	
+ 	<!-- 登录方法 -->
+ 	<select id="login" parameterType="Teacher" resultType="Teacher">
+ 		select name,pwd,imgUrl from t_teacher where name=#{name} and pwd=#{pwd}
+ 	</select>
+ 	
+</mapper> 

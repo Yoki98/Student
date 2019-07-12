@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace用来找唯一的Mapper文件 一般是mapper的全路径名+xxxMapper -->
+<mapper namespace="org.wzb.student.mapper.CourseMapper">
+	<!-- 查询所有课程 -->
+ 	<select id="queryAll"  resultMap="courseMap">
+ 		select * from t_course
+ 	</select>
+ 	<!-- 查询单门课程 -->
+ 	<select id="queryOne"  resultMap="courseMap" parameterType="Course">
+ 		select * from t_course where id=#{id}
+ 	</select>
+ 	
+ 	<!-- 与数据库类型映射 -->
+ 	<resultMap type="Course" id="courseMap">
+ 		<id column="id" property="id"/>
+ 		<result column="course_name" property="course_name"/>
+ 		<result column="credit" property="credit"/>
+ 		<result column="course_hour" property="course_hour"/>
+ 	</resultMap>
+ 	
+ 	<!-- 删除课程 -->
+ 	<delete id="delete" parameterType="Course">
+ 		delete from t_course where id=#{id}
+ 	</delete>
+ 	
+ 	<!-- 保存方法 -->
+ 	<insert id="save" parameterType="Course" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+ 		insert into t_course(course_name,credit,course_hour) values(#{course_name},#{credit},#{course_hour});
+ 	</insert>
+ 	
+ 	<!-- 更新方法 -->
+ 	<update id="update" parameterType="Course">
+ 		update t_course set course_name=#{course_name},credit=#{credit},course_hour=#{course_hour} where id=#{id}
+ 	</update>
+ 	
+</mapper> 

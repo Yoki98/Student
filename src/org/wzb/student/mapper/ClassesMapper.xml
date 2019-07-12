@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace用来找唯一的Mapper文件 一般是mapper的全路径名+xxxMapper -->
+<mapper namespace="org.wzb.student.mapper.ClassesMapper">
+	<!-- 查询所有班级 -->
+ 	<select id="queryAll"  resultType="Classes">
+ 		select * from t_class
+ 	</select>
+	
+	<!-- 报表查询 -->
+	<select id="queryClassesChart"  resultType="ClassesChart">
+ 		select count(t1.classid) s_count,t2.class_name subject from t_student t1,t_class t2
+ 		where t1.classid = t2.id group by t1.classid
+ 	</select>
+</mapper> 
